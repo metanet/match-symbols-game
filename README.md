@@ -13,7 +13,7 @@ symbols, or both match the same number of cells, which is a tie. You can see
 the game logic at 
 [`game.py`](https://github.com/metanet/match-symbols-game/blob/master/game.py).
 
-The game is played via a simple and text-based TPC server which is available
+The game is played via a simple and text-based TCP server which is available
 inside 
 [`game_server.py`](https://github.com/metanet/match-symbols-game/blob/master/game_server.py). 
 The server is implemented with the 
