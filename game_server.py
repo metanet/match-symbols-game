@@ -31,9 +31,9 @@ the game server is started on localhost:6700, you can connect to it with:
 telnet localhost 6700. The game server supports arbitrary number of players.
 Since the game is for 2 players, the game server pairs connecting players
 in the FIFO order. When a player joins the server, she will wait in the lobby 
-until another player joins. When a player disconnects during the game, the 
+until another player chimes in. When a player disconnects during the game, the
 other player returns back to the lobby. If you want to disconnect your telnet
-client, you can hit "CTRL+]" and then type "close".
+client, you can hit "CTRL+]", then type "close".
 """
 
 import logging, string, argparse, curio, game_controller
