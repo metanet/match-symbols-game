@@ -17,7 +17,7 @@ class _Cell:
     def __init__(self, symbol):
         self._status = _Cell._CLOSED
         self._symbol = symbol
-   
+
 
     def __repr__(self):
         return self.__str__()
@@ -54,20 +54,20 @@ class _Cell:
 
     def open(self):
         self._status = _Cell._OPEN
- 
+
 
 
 class Game:
-    """Contains logic for the match symbols game. 
+    """Contains logic for the match symbols game.
 
-    This game is played by 2 people in turns. There is a deck of symbols and 
+    This game is played by 2 people in turns. There is a deck of symbols and
     initially all symbols are closed. Each player opens 2 cells on her turn.
     If both cells have the same symbol, the player's score is incremented and
-    the player open 2 other cells. Otherwise, the player's cells are closed and 
-    it becomes the other player's turn. 
+    the player open 2 other cells. Otherwise, the player's cells are closed and
+    it becomes the other player's turn.
 
     The game is completed when either one of the players manages to match more
-    than half of the symbols, or both match the same number of cells, which is 
+    than half of the symbols, or both match the same number of cells, which is
     a tie.
     """
 
@@ -75,7 +75,7 @@ class Game:
     def __init__(self, symbols, player1, player2):
         """Initializes the game object with the given parameters.
 
-        Symbols is a string of at least 3 unique characters. player1 and 
+        Symbols is a string of at least 3 unique characters. player1 and
         player2 are also strings which are different than each other.
         """
         if len(symbols) < 2 or len(symbols) != len(set(iter(symbols))) \
@@ -96,7 +96,7 @@ class Game:
         self._score2 = 0
 
 
-    def peek(self): 
+    def peek(self):
         """Returns a tuple of pairs with indices of all closed symbols"""
         view = {}
         for i in range(0, len(self._deck)):
@@ -124,25 +124,25 @@ class Game:
     def play(self, player, cell_index):
         """Opens the given cell and returns the new status of the game.
 
-        Raises ValueError if it is not the given player's turn,  or the given 
+        Raises ValueError if it is not the given player's turn,  or the given
         cell is not playable. Only closed cells are playable. Also raises
         IndexError if the given cell index is out of the game deck's bounds.
 
         Each player makes its moves in turns. Each player opens 2 cells during
-        her turn. If those cells have different symbols, the player gets no 
-        score, its cells are closed, and it becomes  the other player's turn. 
-        If the cells have the same symbol, then the player's score is increased 
-        and the player opens 2 other cells. 
+        her turn. If those cells have different symbols, the player gets no
+        score, its cells are closed, and it becomes  the other player's turn.
+        If the cells have the same symbol, then the player's score is increased
+        and the player opens 2 other cells.
 
-        The game is completed when either one of the players manages to match 
+        The game is completed when either one of the players manages to match
         more than half of the symbols, or both match the same number of cells,
         which is a tie.
 
-        Return values are dictionary object. When the game continues, return 
-        values contain the deck's view and the current turn with DECK_KEY and 
-        WHOSE_TURN_KEY respectively. When the game is over, the result is 
+        Return values are dictionary object. When the game continues, return
+        values contain the deck's view and the current turn with DECK_KEY and
+        WHOSE_TURN_KEY respectively. When the game is over, the result is
         present in WINNER_KEY, whose value could be either one of the players
-        or the TIE value. Return values always contain scores of the players 
+        or the TIE value. Return values always contain scores of the players
         with players as keys and their scores as values.
         """
         if self._turn != player:
@@ -177,7 +177,7 @@ class Game:
                 self._turn = None
                 # either the current turn wins or it is a tie.
                 winner = player if status == player else TIE
-                return { 
+                return {
                     WINNER_KEY : winner,
                     self._player1 : self._score1,
                     self._player2 : self._score2
@@ -190,11 +190,11 @@ class Game:
             # and the new cell does not match with the previous cell.
             self._turn = self._get_next_player()
             # first close the previous cell, then create the response,
-            # and close the current cell at last. by this way, only 
+            # and close the current cell at last. by this way, only
             # the current cell will be displayed.
             self._prev_cell.close()
             self._prev_cell = None
-            result = self._get_deck_info() 
+            result = self._get_deck_info()
             cell.close()
             return result
 
@@ -220,7 +220,7 @@ class Game:
 
     def _get_next_player(self):
         return self._player1 if self._turn == self._player2 else self._player2
-    
+
 
     def _get_deck_info(self):
         return {

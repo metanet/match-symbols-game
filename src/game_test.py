@@ -31,8 +31,8 @@ def test_first_play(game):
     assert result[_player2] == 0
     for symbol in result[DECK_KEY][1:]:
         assert symbol == CLOSED_CELL_LABEL
-    
-    
+
+
 def test_failed_second_play(game):
     player = game.whose_turn()
     all_letters = game.peek()
@@ -45,7 +45,7 @@ def test_failed_second_play(game):
     assert result2[_player1] == 0
     assert result2[_player2] == 0
     assert result2[WHOSE_TURN_KEY] and result2[WHOSE_TURN_KEY] != player
-    
+
 
 def test_new_play_after_fail(game):
     player = game.whose_turn()
@@ -54,7 +54,7 @@ def test_new_play_after_fail(game):
     game.play(player, all_letters[0][0])
     game.play(player, all_letters[1][0])
     player = game.whose_turn()
-    
+
     result = game.play(player, 0)
 
     assert game.whose_turn() == player
@@ -86,10 +86,10 @@ def test_new_play_after_open(game):
     player = game.whose_turn()
     other_player = _player1 if player == _player2 else _player2
     all_indices = game.peek()
-    
+
     game.play(player, all_indices[0][0])
     game.play(player, all_indices[0][1])
-    
+
     result = game.play(player, all_indices[1][0])
 
     assert result[DECK_KEY][all_indices[0][0]] == OPEN_CELL_LABEL
@@ -120,7 +120,7 @@ def test_play_by_invalid_player(game):
 
     with pytest.raises(ValueError):
         game.play(other_player, 0)
-    
+
 
 def test_play_negative_index(game):
     turn = game.whose_turn()
@@ -136,7 +136,7 @@ def test_play_overflowing_index(game):
 
 def test_play_turned_index(game):
     turn = game.whose_turn()
-    
+
     game.play(turn, 0)
     with pytest.raises(ValueError):
         game.play(turn, 0)

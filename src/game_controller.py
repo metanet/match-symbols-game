@@ -41,7 +41,7 @@ def _to_row(ch, limit):
 
 
 def _to_index(num_rows, num_cols, row_ch, col_ch):
-    return _to_row(row_ch, num_rows) * num_cols + _to_col(col_ch, num_cols)    
+    return _to_row(row_ch, num_rows) * num_cols + _to_col(col_ch, num_cols)
 
 
 
@@ -52,10 +52,10 @@ class GameController:
     def __init__(self, num_rows, num_cols, player1, player2):
         """Initializes the controller object with the given parameters.
 
-        The match symbols game deck is displayed in a matrix with an even 
+        The match symbols game deck is displayed in a matrix with an even
         number of cells. Each cell is a letter in the English alphabet and each
-        symbol is placed twice, hence there can be at most 52 cells. Moreover, 
-        there can be at most 9 rows and 26 columns, because rows are labeled 
+        symbol is placed twice, hence there can be at most 52 cells. Moreover,
+        there can be at most 9 rows and 26 columns, because rows are labeled
         from 1 to 9 and columns are labeled from A to Z.
         """
         if not 1 <= num_rows <= 9 or not 1 <= num_cols <= 26 \
@@ -80,19 +80,19 @@ class GameController:
         """Returns the initial view to be shown to the players"""
         return self._initial_views
 
-    
+
     def play(self, player, cell_str):
         """Opens the given cell for the given player.
 
-        cell_str is a string of 2 characters, where the first character is 
+        cell_str is a string of 2 characters, where the first character is
         the row label and the second character is the column label.
 
-        Return values are dictionaries. There is a key for each player and 
+        Return values are dictionaries. There is a key for each player and
         the value is the view string which must be shown for that player.
         There is also a GAME_OVER_KEY with a boolean value.
         """
         if not cell_str or len(cell_str) != 2:
-            return self._invalid_input_response(player)    
+            return self._invalid_input_response(player)
         try:
             index = _to_index(self._num_rows, self._num_cols, cell_str[0], cell_str[1])
             play_result = self._game.play(player, index)
@@ -102,7 +102,7 @@ class GameController:
         if not play_result.get(WINNER_KEY):
             return {
                 players[0] : self._generate_game_view(play_result, players[0]),
-                players[1] : self._generate_game_view(play_result, players[1]), 
+                players[1] : self._generate_game_view(play_result, players[1]),
                 GAME_OVER_KEY : False
             }
         else:
@@ -111,7 +111,7 @@ class GameController:
                 message = f"%s: %d, %s: %d\nGame over... %s won!\n" % (players[0], play_result[players[0]], players[1], play_result[players[1]], winner)
             else:
                 message = f"%s: %d, %s: %d\nGame over... It is a tie!\n" % (players[0], play_result[players[0]], players[1], play_result[players[1]])
-                
+
             return { players[0]: message, players[1]: message, GAME_OVER_KEY : True }
 
 
@@ -128,7 +128,7 @@ class GameController:
         for col_label in _COL_LABELS[0:self._num_cols]:
             buffer.append(col_label)
             buffer.append(' ')
-        
+
         for row_label in _ROW_LABELS[0:self._num_rows]:
             buffer.append('\n')
             buffer.append(row_label)
@@ -157,7 +157,7 @@ class GameController:
         for col_label in _COL_LABELS[0:self._num_cols]:
             buffer.append(col_label)
             buffer.append(' ')
-        
+
         for row in range(0, self._num_rows):
             buffer.append('\n')
             buffer.append(_ROW_LABELS[row])

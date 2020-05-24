@@ -30,7 +30,7 @@ You can connect to the game server with a telnet client. For instance, if
 the game server is started on localhost:6700, you can connect to it with:
 telnet localhost 6700. The game server supports arbitrary number of players.
 Since the game is for 2 players, the game server pairs connecting players
-in the FIFO order. When a player joins the server, she will wait in the lobby 
+in the FIFO order. When a player joins the server, she will wait in the lobby
 until another player chimes in. When a player disconnects during the game, the
 other player returns back to the lobby. If you want to disconnect your telnet
 client, you can hit "CTRL+]", then type "close".
@@ -96,13 +96,13 @@ class _Randezvous:
     def get_player(self, player_name):
         if not self.player1 or not self.player2:
             raise ValueError
-        return self.player1 if self.player1 == player_name else self.player2 
+        return self.player1 if self.player1 == player_name else self.player2
 
 
     def get_opponent(self, player):
         if not self.player1 or not self.player2:
             raise KeyError
-        return self.player1 if self.player2 == player else self.player2 
+        return self.player1 if self.player2 == player else self.player2
 
 
     def reset(self):
@@ -118,7 +118,7 @@ class _Randezvous:
 _DEFAULT_HOST = "localhost"
 _DEFAULT_PORT = 6700
 _DEFAULT_NUM_ROWS = 4
-_DEFAULT_NUM_COLS = 6        
+_DEFAULT_NUM_COLS = 6
 
 _randezvous = _Randezvous()
 _START_GAME = -1
@@ -138,7 +138,7 @@ async def _player_outbound(player):
     while True:
         message = await player.dequeue_message()
         await player.write_message(message)
-    
+
 
 async def _player_inbound(player, game_queue):
     async for message in player.stream:
@@ -185,7 +185,7 @@ async def _game_loop(randezvous):
         except Exception as e:
             logger.error("%s's %s failed with: %s", player.name, move, e)
 
-        
+
 async def _get_player_name(client_stream):
     while True:
         await _do_write_message(client_stream, "Your name: ")
@@ -210,7 +210,7 @@ async def _randezvous_loop(player, client_stream):
             # I might be adding myself into my previous randevous or a totally new one
             my_randezvous = _randezvous
             my_randezvous.add_player(player)
-        
+
         if my_randezvous.is_full():
             if _randezvous == my_randezvous:
                 # this randezvous is done. create a new one for newcomers...
@@ -251,7 +251,7 @@ async def _randezvous_loop(player, client_stream):
                 add_this_player = True
                 # I might add myself into the same randevous so resetting it
                 my_randezvous.reset()
-        else: 
+        else:
             if not my_randezvous.is_full():
                 # if I am the only player in the current randezvous, reset it
                 # so that new players can use it.
@@ -260,7 +260,7 @@ async def _randezvous_loop(player, client_stream):
 
     logger.info("%s has left...", player.name)
 
-   
+
 async def _client_handler(client, addr):
     logger = logging.getLogger("client_handler")
     logger.info("%s connected", addr)
@@ -271,11 +271,11 @@ async def _client_handler(client, addr):
             player_name = await _get_player_name(client_stream)
             logger.info("%s's name is %s", addr, player_name)
             await _do_write_message(client_stream, f"Welcome %s!\n" % (player_name))
-            await _randezvous_loop(_Player(player_name, client, client_stream), client_stream)            
-       
+            await _randezvous_loop(_Player(player_name, client, client_stream), client_stream)
+
         logger.info("%s closed", addr)
     except Exception as e:
-        logger.error("%s failed with: %s", addr, e)        
+        logger.error("%s failed with: %s", addr, e)
 
 
 async def start_game_server(host, port):
@@ -285,7 +285,7 @@ async def start_game_server(host, port):
 
 
 if __name__ == "__main__":
-    
+
     parser = argparse.ArgumentParser(description='Starts a TPC game server for the match symbols game.')
     parser.add_argument("--host", dest="host", nargs='?', default=_DEFAULT_HOST,
                     help="hostname to bind")
@@ -306,4 +306,3 @@ if __name__ == "__main__":
 
     logging.basicConfig(format='%(asctime)s [%(levelname)s] %(name)s : %(message)s', level=logging.INFO)
     curio.run(start_game_server(args.host, args.port))
-    
