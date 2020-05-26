@@ -19,7 +19,7 @@ You can see a quick demo below. In this demo, I start a game server with the def
 
 ## Try it yourself
 
-You can start the game server as below. It binds to `localhost:10670` by default. 
+You can start the game server as below. It binds to `localhost:10670` by default. Make sure you have Python 3.7+. 
 
 ```
 git clone https://github.com/metanet/match-symbols-game.git
