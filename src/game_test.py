@@ -1,11 +1,11 @@
 
+
 import pytest
+import string
 from game import Game, CLOSED_CELL_LABEL, OPEN_CELL_LABEL, WINNER_KEY, WHOSE_TURN_KEY, DECK_KEY
-from string import ascii_lowercase
 
 
-
-_symbols = ascii_lowercase[:5]
+_symbols = string.ascii_lowercase[:5]
 _player1 = "p1"
 _player2 = "p2"
 

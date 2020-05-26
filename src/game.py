@@ -1,5 +1,6 @@
 
-from random import shuffle, randint
+
+import random
 
 CLOSED_CELL_LABEL = "."
 OPEN_CELL_LABEL = " "
@@ -18,10 +19,8 @@ class _Cell:
         self._status = _Cell._CLOSED
         self._symbol = symbol
 
-
     def __repr__(self):
         return self.__str__()
-
 
     def __str__(self):
         if self._status == _Cell._CLOSED:
@@ -31,30 +30,23 @@ class _Cell:
         else:
             return self._symbol
 
-
     def symbol(self):
         return self._symbol
-
 
     def is_playable(self):
         return self._status == _Cell._CLOSED
 
-
     def is_same_with(self, other):
         return self._symbol == other._symbol
-
 
     def turn(self):
         self._status = _Cell._TURNED
 
-
     def close(self):
         self._status = _Cell._CLOSED
 
-
     def open(self):
         self._status = _Cell._OPEN
-
 
 
 class Game:
@@ -71,7 +63,6 @@ class Game:
     a tie.
     """
 
-
     def __init__(self, symbols, player1, player2):
         """Initializes the game object with the given parameters.
 
@@ -79,22 +70,21 @@ class Game:
         player2 are also strings which are different than each other.
         """
         if len(symbols) < 2 or len(symbols) != len(set(iter(symbols))) \
-            or not player1 or not player2 or player1 == player2:
+                or not player1 or not player2 or player1 == player2:
             raise ValueError
         symbols = list(iter(symbols))
         self._win_score = len(symbols) // 2 + 1
         symbols = symbols + symbols
-        shuffle(symbols)
+        random.shuffle(symbols)
         self._deck = []
         for symbol in symbols:
             self._deck.append(_Cell(symbol))
         self._player1 = player1
         self._player2 = player2
-        self._turn = player2 if randint(0, 1) else player1
+        self._turn = player2 if random.randint(0, 1) else player1
         self._prev_cell = None
         self._score1 = 0
         self._score2 = 0
-
 
     def peek(self):
         """Returns a tuple of pairs with indices of all closed symbols"""
@@ -110,16 +100,13 @@ class Game:
 
         return tuple(view.values())
 
-
     def whose_turn(self):
         """Returns the player who will play"""
         return self._turn
 
-
     def players(self):
         """Returns a tuple of the players"""
         return (self._player1, self._player2)
-
 
     def play(self, player, cell_index):
         """Opens the given cell and returns the new status of the game.
@@ -178,9 +165,9 @@ class Game:
                 # either the current turn wins or it is a tie.
                 winner = player if status == player else TIE
                 return {
-                    WINNER_KEY : winner,
-                    self._player1 : self._score1,
-                    self._player2 : self._score2
+                    WINNER_KEY: winner,
+                    self._player1: self._score1,
+                    self._player2: self._score2
                 }
             else:
                 # the game is still on...
@@ -198,7 +185,6 @@ class Game:
             cell.close()
             return result
 
-
     def _increment_score(self):
         if self._turn == self._player1:
             self._score1 += 1
@@ -210,22 +196,19 @@ class Game:
                 return self._player2
         return TIE if self._score1 + self._score2 == len(self._deck) // 2 else 0
 
-
     def _get_deck_symbols(self):
         deck_symbols = []
         for symbol in self._deck:
             deck_symbols.append(str(symbol))
         return deck_symbols
 
-
     def _get_next_player(self):
         return self._player1 if self._turn == self._player2 else self._player2
 
-
     def _get_deck_info(self):
         return {
-            DECK_KEY : self._get_deck_symbols(),
-            WHOSE_TURN_KEY : self._turn,
-            self._player1 : self._score1,
-            self._player2 : self._score2
+            DECK_KEY: self._get_deck_symbols(),
+            WHOSE_TURN_KEY: self._turn,
+            self._player1: self._score1,
+            self._player2: self._score2
         }
