@@ -225,9 +225,9 @@ async def _start_game(randezvous, player, is_first_game):
 async def _join_lobby(player, client_stream):
     logger = logging.getLogger("lobby")
 
-    add_this_player = True
+    join = True
     while True:
-        if add_this_player:
+        if join:
             # I might be adding myself into my previous randevous or a totally new one
             my_randezvous = _lobby.randezvous
             my_randezvous.add_player(player)
@@ -237,7 +237,7 @@ async def _join_lobby(player, client_stream):
                 # this randezvous is done. create a new one for newcomers
                 _lobby.randezvous = _Randezvous()
 
-            await _start_game(my_randezvous, player, add_this_player)
+            await _start_game(my_randezvous, player, join)
         else:
             await player.enqueue_message("Waiting for the second player...\n")
             async with my_randezvous.task_group:
@@ -252,12 +252,12 @@ async def _join_lobby(player, client_stream):
                 # game over. continue with the same randevous since both players are here
                 logger.info(f"%s and %s are starting a new game..." %
                             (player.name, opponent.name))
-                add_this_player = False
+                join = False
             else:
                 logger.warning(f"%s has left. %s will wait for a new opponent..." % (
                     opponent.name, player.name))
                 await player.enqueue_message(f"\n%s has left.\n" % (opponent.name))
-                add_this_player = True
+                join = True
                 # I might add myself into the same randevous so resetting it
                 my_randezvous.reset()
         else:
